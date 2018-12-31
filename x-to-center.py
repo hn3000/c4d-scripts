@@ -6,6 +6,7 @@ def main():
     
     obj = doc.GetActiveObject()
 
+    doc.StartUndo()
     sum = 0
     found = 0
 
@@ -22,6 +23,8 @@ def main():
 
     newx = sum / found
 
+    doc.AddUndo(c4d.UNDOTYPE_CHANGE, obj)
+
     for index, selected in enumerate(bs.GetAll(maxEl)):
         if not selected: continue
             
@@ -30,5 +33,7 @@ def main():
             obj.SetPoint(index, c4d.Vector(newx, p.y, p.z))
 
 
+    obj.Message(c4d.MSG_UPDATE)
 
-
+    doc.EndUndo()
+    c4d.EventAdd()
